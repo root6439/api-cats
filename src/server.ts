@@ -18,12 +18,30 @@ const app = express();
 
 app.use(express.json());
 
-app.use(cors())
+app.use(cors());
 
 let router = Router();
 
 router.get("/cats", (req: Request, res: Response) => {
-  return res.status(200).json(cats);
+  let response: Cat[] = cats;
+
+  let search = String(req.query.search);
+
+  console.log(search);
+
+  if (search) {
+    response = cats.filter((value) => {
+      return value.name.toLowerCase().includes(search.toLowerCase());
+    });
+
+    // response = response.concat(
+    //   ...cats.filter((value) => {
+    //     return value.race.toLowerCase().includes(search);
+    //   })
+    // );
+  }
+
+  return res.status(200).json(response);
 });
 
 router.get("/cats/:id", (req: Request, res: Response) => {
