@@ -1,4 +1,4 @@
-import express, { Request, Response, Router } from "express";
+import express, { NextFunction, Request, Response, Router } from "express";
 import { Cat } from "./shared/models/Cat";
 import cors from "cors";
 
@@ -21,6 +21,17 @@ app.use(express.json());
 app.use(cors());
 
 let router = Router();
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  if (req.headers.authorization) {
+    next();
+  }
+
+  return res.status(401).json({
+    status: "auth_error",
+    message: "Erro de autenticação",
+  });
+});
 
 router.get("/cats", (req: Request, res: Response) => {
   let response: Cat[] = cats;
