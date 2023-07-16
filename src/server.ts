@@ -23,7 +23,7 @@ app.use(cors());
 let router = Router();
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-  if (req.headers.authorization) {
+  if (req.headers.authorization || req.url == "/login") {
     next();
   }
 
