@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import authConfig from "../config/auth";
 import { verify } from "jsonwebtoken";
+import { AppError } from "../shared/models/Error";
 
 interface TokenPayload {
   iat: number;
@@ -12,7 +13,7 @@ export function isAuthenticated(req: Request, res: Response, next: NextFunction)
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
-    throw new Error("Usuário não autenticado.");
+    throw new AppError(403, "Usuário não autenticado.");
   }
 
   const token = authHeader.split(" ")[1] ?? "";
@@ -27,6 +28,6 @@ export function isAuthenticated(req: Request, res: Response, next: NextFunction)
 
     return next();
   } catch {
-    throw new Error("Token inválido.");
+    throw new AppError(401, "Token inválido.");
   }
 }

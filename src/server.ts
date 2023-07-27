@@ -1,25 +1,17 @@
-import express, { NextFunction, Request, Response, Router } from "express";
+import "reflect-metadata";
+
 import cors from "cors";
-import { catRouter } from "./routes/Cat.routes";
+import { routes } from "./routes/Index.routes";
+import express, { Router } from "express";
+import { handleErrors } from "./middlewares/handleErrors";
 
 const app = express();
+
 app.use(express.json());
 app.use(cors());
-let router = Router();
+app.use(routes);
 
-app.use((req: Request, res: Response, next: NextFunction) => {
-  if (req.headers.authorization || req.url == "/login") {
-    next();
-  }
-
-  return res.status(401).json({
-    status: "auth_error",
-    message: "Erro de autenticação",
-  });
-});
-
-app.use(router);
-app.use(catRouter);
+app.use(handleErrors);
 
 app.listen(3000, () => {
   console.log("Server on");

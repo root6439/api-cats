@@ -5,12 +5,12 @@ import { isAuthenticated } from "../middlewares/isAuthenticated";
 const controller = new CatController();
 const catRouter = Router();
 
-catRouter.use(isAuthenticated);
+// catRouter.use(isAuthenticated);
 
-catRouter.get("/cats", controller.getAll);
-catRouter.get("/cats/:id", controller.getById);
-catRouter.post("/cats", controller.post);
-catRouter.put("/cats/:id", controller.put);
-catRouter.delete("/cats/:id", controller.delete);
+catRouter.get("/", controller.getAll.bind(controller));
+catRouter.get("/:id", controller.getById.bind(controller));
+catRouter.post("/", controller.post.bind(controller));
+catRouter.put("/:id", controller.put.bind(controller));
+catRouter.delete("/:id", controller.delete.bind(controller));
 
 export { catRouter };

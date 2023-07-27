@@ -1,4 +1,5 @@
 import { Cat } from "../shared/models/Cat";
+import { genId } from "../shared/utils/generateId";
 
 export class CatService {
   cats: Cat[] = [
@@ -33,7 +34,7 @@ export class CatService {
   post(body: Cat): Promise<Cat> {
     return new Promise((resolve, reject) => {
       let cat: Cat = {
-        id: this.genId(),
+        id: genId(this.cats),
         ...body,
       };
 
@@ -60,9 +61,5 @@ export class CatService {
       this.cats.splice(index);
       resolve();
     });
-  }
-
-  genId(): number {
-    return this.cats.length > 0 ? Math.max(...this.cats.map((cats) => cats.id)) + 1 : 11;
   }
 }
