@@ -5,7 +5,7 @@ import { isAuthenticated } from "../middlewares/isAuthenticated";
 const controller = new CatController();
 const catRouter = Router();
 
-// catRouter.use(isAuthenticated);
+catRouter.use(isAuthenticated);
 
 catRouter.get("/", controller.getAll.bind(controller));
 catRouter.get("/:id", controller.getById.bind(controller));

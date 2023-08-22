@@ -5,7 +5,6 @@ import authConfig from "../config/auth";
 import { Auth } from "../shared/models/Auth";
 import { AppError } from "../shared/models/Error";
 import { UserRepository } from "../repositories/User.repository";
-import { UserDTO } from "../shared/models/user/UserDTO";
 
 export class LoginService {
   private userRepo = new UserRepository();

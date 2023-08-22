@@ -33,17 +33,13 @@ export class UserRepository {
   }
 
   getAll(search: string = ""): Promise<User[]> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       let response = this.users;
 
       if (search != "") {
         search = search.toLowerCase();
         let response = this.users.filter((value) => value.email.toLowerCase().includes(search));
         response = response.concat(this.users.filter((value) => value.name.toLowerCase().includes(search)));
-
-        if (response.length == 0) {
-          return reject(new AppError(404, "Usuário não encontrado!"));
-        }
       }
 
       resolve(response);
