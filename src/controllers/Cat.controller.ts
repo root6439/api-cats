@@ -1,14 +1,19 @@
 import { Request, Response } from "express";
 import { CatService } from "../services/Cat.service";
 import { Cat } from "../shared/models/Cat";
+import { log } from "console";
 
 export class CatController {
   service = new CatService();
 
   async getAll(req: Request, res: Response): Promise<Response<Cat[]>> {
-    let search: string = req.query.search as string;
-    let response = await this.service.getAll(search);
-    return res.json(response);
+    try {
+      let search: string = req.query.search as string;
+      let response = await this.service.getAll(search);
+      return res.json(response);
+    } catch (err) {
+      log(err);
+    }
   }
 
   async getById(req: Request, res: Response): Promise<Response<Cat>> {

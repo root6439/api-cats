@@ -1,69 +1,50 @@
-import { User } from "../shared/models/User";
-import { compare, hash } from "bcryptjs";
+import { User } from "../shared/models/user/User";
+import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import authConfig from "../config/auth";
 import { Auth } from "../shared/models/Auth";
-import { genId } from "../shared/utils/generateId";
 import { AppError } from "../shared/models/Error";
+import { UserRepository } from "../repositories/User.repository";
+import { UserDTO } from "../shared/models/user/UserDTO";
 
 export class LoginService {
-  users: User[] = [
-    {
-      id: 1,
-      email: "jae@example.com",
-      name: "Jane Smith 1234",
-      password: "$2a$08$dsprLpk6ScXLdx09dFBMYeEpSjAYoJvGpnPCmm3Dy7ysqPrt6l4Aa",
-    },
-  ];
+  private userRepo = new UserRepository();
 
-  getAll(search: string = ""): Promise<User[]> {
-    return new Promise((resolve, reject) => {
-      let response: User[] = this.users.filter((value) => {
-        return value.name.toLowerCase().includes(search.toLowerCase());
-      });
-
-      resolve(response);
-    });
+  async getAll(search: string = ""): Promise<User[]> {
+    return this.userRepo.getAll(search);
   }
 
-  login(login: string, password: string): Promise<Auth> {
-    return new Promise(async (resolve, reject) => {
-      let user = this.users.find((value) => value.email == login && value.password == password);
+  async login(login: string, password: string): Promise<Auth> {
+    let user = await this.userRepo.getUserByEmail(login);
 
-      if (!user) {
-        throw new AppError(401, "Login ou senha inválidos");
-      }
+    if (!user) {
+      throw new AppError(404, "Usuário não encontrado");
+    }
 
-      const passwordConfirmed = await compare(password, user.password);
+    const passwordConfirmed = await compare(password, user.password);
 
-      if (!passwordConfirmed) {
-        throw new AppError(401, "Login ou senha inválidos");
-      }
+    if (!passwordConfirmed) {
+      throw new AppError(401, "Senha inválida");
+    }
 
-      const token = sign(user, authConfig.jwt.secret);
+    const token = sign(user, authConfig.jwt.secret);
 
-      resolve({ user, token });
-    });
+    return { userResponse: { id: user.id, email: user.email, name: user.name }, token };
   }
 
-  register(user: User): Promise<User> {
-    return new Promise(async (resolve, reject) => {
-      let userAlreadyRegistered = this.users.map((value) => value.email).includes(user.email);
+  async register(user: User): Promise<User> {
+    let userAlreadyRegistered = await this.userRepo.getUserByEmail(user.email);
 
-      if (userAlreadyRegistered) {
-        throw new AppError(500, "Usuário já cadastrado");
-      }
+    console.log(userAlreadyRegistered);
 
-      let hashedPassword = await hash(user.password, 8);
+    if (userAlreadyRegistered) {
+      throw new AppError(500, "Usuário já cadastrado");
+    }
 
-      this.users.push({
-        id: genId(this.users),
-        email: user.email,
-        name: user.name,
-        password: hashedPassword,
-      });
+    let newUser = await this.userRepo.postUser(user);
 
-      resolve(this.users.at(-1));
-    });
+    console.log(newUser);
+
+    return newUser;
   }
 }

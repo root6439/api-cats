@@ -1,3 +1,11 @@
-export class AppError {
-  constructor(public status: number = 500, public message: string = "") {}
+export class AppError extends Error {
+  status: number;
+  message: string;
+  timestamp: number;
+  constructor(status: number, message: string) {
+    super(message);
+    this.status = status;
+    this.message = message;
+    this.timestamp = new Date().getTime();
+  }
 }

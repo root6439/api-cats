@@ -1,19 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 import { AppError } from "../shared/models/Error";
 
-export function handleErrors(error: Error, req: Request, res: Response, next: NextFunction) {
-  if (error instanceof AppError) {
-    return res.status(error.status).json({
-      message: error.message,
-      timestamp: new Date().getTime(),
-    });
-  }
-
+export function handleErrors(error: AppError, req: Request, res: Response, next: NextFunction) {
   console.log(error);
-  console.log(" opaopaopaopap");
+  console.log("caiu nessa porra");
+  
 
-  return res.status(500).json({
-    message: "Internal server error",
-    timestamp: new Date().getTime(),
+  return res.status(error.status).json({
+    message: error.message,
+    timestamp: error.timestamp,
   });
 }
