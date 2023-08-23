@@ -10,7 +10,7 @@ export class CatService {
     { id: 5, name: "Farofa", length: 0.8, weight: 4.0, race: "Abissínio" },
   ];
 
-  getAll(search?: string): Promise<Cat[]> {
+  async getAll(search?: string): Promise<Cat[]> {
     return new Promise((resolve, reject) => {
       let response: Cat[] = this.cats;
 
