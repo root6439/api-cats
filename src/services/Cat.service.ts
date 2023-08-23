@@ -1,65 +1,54 @@
+import { CatRepository } from "../repositories/Cat.repository";
 import { Cat } from "../shared/models/Cat";
-import { genId } from "../shared/utils/generateId";
+import { AppError } from "../shared/models/Error";
 
 export class CatService {
-  cats: Cat[] = [
-    { id: 1, name: "Cesar", length: 0.3, weight: 4.0, race: "Ciamês" },
-    { id: 2, name: "Augusto", length: 0.5, weight: 4.0, race: "Persa" },
-    { id: 3, name: "Ronaldo", length: 0.1, weight: 4.0, race: "Burmês" },
-    { id: 4, name: "Gato", length: 0.2, weight: 4.0, race: "Bengal" },
-    { id: 5, name: "Farofa", length: 0.8, weight: 4.0, race: "Abissínio" },
-  ];
+  private catRepo = new CatRepository();
 
   async getAll(search?: string): Promise<Cat[]> {
-    return new Promise((resolve, reject) => {
-      let response: Cat[] = this.cats;
+    let cats = await this.catRepo.getAll(search);
 
-      if (search) {
-        response = this.cats.filter((value) => {
-          return value.name.toLowerCase().includes(search.toLowerCase());
-        });
-      }
+    if (!cats) {
+      throw new AppError(404, "Objeto não encontrado!");
+    }
 
-      resolve(response);
-    });
+    return cats;
   }
 
-  getById(id: number): Promise<Cat> {
-    return new Promise((resolve, reject) => {
-      let cat = this.cats.find((value) => value.id == id);
-      resolve(cat);
-    });
+  async getById(id: number): Promise<Cat> {
+    let cat = await this.catRepo.getById(id);
+
+    if (!cat) {
+      throw new AppError(404, "Objeto não encontrado!");
+    }
+
+    return cat;
   }
 
-  post(body: Cat): Promise<Cat> {
-    return new Promise((resolve, reject) => {
-      let cat: Cat = {
-        id: genId(this.cats),
-        ...body,
-      };
-
-      this.cats.push(body);
-      resolve(cat);
-    });
+  async post(body: Cat): Promise<Cat> {
+    let cat = await this.catRepo.post(body);
+    return cat;
   }
 
-  put(id: number, body: Cat): Promise<Cat> {
-    return new Promise((resolve, reject) => {
-      let index = this.cats.findIndex((value) => value.id == id);
+  async put(id: number, body: Cat): Promise<Cat> {
+    let catFound = await this.catRepo.getById(id);
 
-      this.cats[index] = {
-        id,
-        ...body,
-      };
-      resolve(this.cats[index]);
-    });
+    if (catFound) {
+      throw new AppError(400, "Objeto já cadastrado!");
+    }
+
+    let cat = await this.catRepo.put(id, body);
+
+    return cat;
   }
 
-  delete(id: number): Promise<void> {
-    return new Promise((resolve, reject) => {
-      let index = this.cats.findIndex((value) => value.id == id);
-      this.cats.splice(index);
-      resolve();
-    });
+  async delete(id: number): Promise<void> {
+    let catExists = await this.catRepo.getById(id);
+
+    if (!catExists) {
+      throw new AppError(404, "Objeto não encontrado!");
+    }
+
+    await this.catRepo.delete(id);
   }
 }

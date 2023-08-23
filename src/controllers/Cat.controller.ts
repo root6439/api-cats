@@ -5,7 +5,7 @@ import { Cat } from "../shared/models/Cat";
 export class CatController {
   service = new CatService();
 
-  async getAll(req: Request, res: Response, next): Promise<Response<Cat[]>> {
+  async getAll(req: Request, res: Response): Promise<Response<Cat[]>> {
     let search: string = req.query.search as string;
     let response = await this.service.getAll(search);
     return res.json(response);
