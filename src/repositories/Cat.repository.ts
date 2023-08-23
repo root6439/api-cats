@@ -38,7 +38,7 @@ export class CatRepository {
         ...body,
       };
 
-      this.cats.push(body);
+      this.cats.push(cat);
       resolve(cat);
     });
   }
@@ -58,7 +58,7 @@ export class CatRepository {
   delete(id: number): Promise<void> {
     return new Promise((resolve, reject) => {
       let index = this.cats.findIndex((value) => value.id == id);
-      this.cats.splice(index);
+      this.cats.splice(index, 1);
       resolve();
     });
   }

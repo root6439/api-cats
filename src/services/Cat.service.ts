@@ -33,8 +33,8 @@ export class CatService {
   async put(id: number, body: Cat): Promise<Cat> {
     let catFound = await this.catRepo.getById(id);
 
-    if (catFound) {
-      throw new AppError(400, "Objeto já cadastrado!");
+    if (!catFound) {
+      throw new AppError(400, "Objeto não encontrado!");
     }
 
     let cat = await this.catRepo.put(id, body);
