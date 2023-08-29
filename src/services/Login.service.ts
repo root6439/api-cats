@@ -5,6 +5,7 @@ import authConfig from "../config/auth";
 import { Auth } from "../shared/models/Auth";
 import { AppError } from "../shared/models/Error";
 import { UserRepository } from "../repositories/User.repository";
+import { UserDTO } from "../shared/models/user/UserDTO";
 
 export class LoginService {
   private userRepo = new UserRepository();
@@ -26,9 +27,12 @@ export class LoginService {
       throw new AppError(401, "Senha inválida");
     }
 
-    const token = sign(user, authConfig.jwt.secret);
+    const token = sign({ sub: user.id }, authConfig.jwt.secret, {
+      expiresIn: authConfig.jwt.expiresIn,
+      algorithm: "HS256",
+    });
 
-    return { userResponse: { id: user.id, email: user.email, name: user.name }, token };
+    return { token };
   }
 
   async register(user: User): Promise<User> {

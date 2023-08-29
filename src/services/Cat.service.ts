@@ -1,6 +1,7 @@
 import { CatRepository } from "../repositories/Cat.repository";
 import { Cat } from "../shared/models/Cat";
 import { AppError } from "../shared/models/Error";
+import { Race } from "../shared/models/Race";
 
 export class CatService {
   private catRepo = new CatRepository();
@@ -50,5 +51,15 @@ export class CatService {
     }
 
     await this.catRepo.delete(id);
+  }
+
+  async getRaces(): Promise<Race[]> {
+    let races = await this.catRepo.getRaces();
+
+    if (!races) {
+      throw new AppError(404, "Objeto não encontrado!");
+    }
+
+    return races;
   }
 }

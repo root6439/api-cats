@@ -8,6 +8,7 @@ const catRouter = Router();
 catRouter.use(isAuthenticated);
 
 catRouter.get("/", controller.getAll.bind(controller));
+catRouter.get("/races", controller.getRaces.bind(controller));
 catRouter.get("/:id", controller.getById.bind(controller));
 catRouter.post("/", controller.post.bind(controller));
 catRouter.put("/:id", controller.put.bind(controller));

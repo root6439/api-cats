@@ -1,13 +1,25 @@
 import { Cat } from "../shared/models/Cat";
+import { Race } from "../shared/models/Race";
 import { genId } from "../shared/utils/generateId";
 
 export class CatRepository {
+  races: Race[] = [
+    { id: 1, name: "Siamês" },
+    { id: 2, name: "Persa" },
+    { id: 3, name: "Burmês" },
+    { id: 4, name: "Bengal" },
+    { id: 5, name: "Abissínio" },
+    { id: 6, name: "Maine Coon" },
+    { id: 7, name: "Sphynx" },
+    { id: 8, name: "Vira-lata" },
+  ];
+
   cats: Cat[] = [
-    { id: 1, name: "Cesar", length: 0.3, weight: 4.0, race: "Ciamês" },
-    { id: 2, name: "Augusto", length: 0.5, weight: 4.0, race: "Persa" },
-    { id: 3, name: "Ronaldo", length: 0.1, weight: 4.0, race: "Burmês" },
-    { id: 4, name: "Gato", length: 0.2, weight: 4.0, race: "Bengal" },
-    { id: 5, name: "Farofa", length: 0.8, weight: 4.0, race: "Abissínio" },
+    { id: 1, name: "Cesar", length: 0.3, weight: 4.1, race: [this.races[0], this.races[1]] },
+    { id: 2, name: "Augusto", length: 0.5, weight: 4.2, race: [{ id: 2, name: "Persa" }] },
+    { id: 3, name: "Ronaldo", length: 0.1, weight: 4.3, race: [{ id: 3, name: "Burmês" }] },
+    { id: 4, name: "Gato", length: 0.2, weight: 4.0, race: [{ id: 4, name: "Bengal" }] },
+    { id: 5, name: "Farofa", length: 0.8, weight: 4.0, race: [{ id: 5, name: "Abissínio" }] },
   ];
 
   async getAll(search: string = ""): Promise<Cat[]> {
@@ -60,6 +72,12 @@ export class CatRepository {
       let index = this.cats.findIndex((value) => value.id == id);
       this.cats.splice(index, 1);
       resolve();
+    });
+  }
+
+  getRaces(): Promise<Race[]> {
+    return new Promise((resolve) => {
+      resolve(this.races);
     });
   }
 }
