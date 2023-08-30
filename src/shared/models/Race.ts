@@ -1,4 +1,3 @@
 export class Race {
-    id: number;
-    name: string;
+  constructor(public id: number, public name: string) {}
 }

@@ -4,22 +4,19 @@ import { genId } from "../shared/utils/generateId";
 
 export class CatRepository {
   races: Race[] = [
-    { id: 1, name: "Siamês" },
-    { id: 2, name: "Persa" },
-    { id: 3, name: "Burmês" },
-    { id: 4, name: "Bengal" },
-    { id: 5, name: "Abissínio" },
-    { id: 6, name: "Maine Coon" },
-    { id: 7, name: "Sphynx" },
-    { id: 8, name: "Vira-lata" },
+    new Race(1, "Siamese"),
+    new Race(2, "Persian"),
+    new Race(3, "Tabby"),
+    new Race(4, "Maine Coon"),
+    new Race(5, "Sphynx"),
   ];
 
   cats: Cat[] = [
-    { id: 1, name: "Cesar", length: 0.3, weight: 4.1, race: [this.races[0], this.races[1]] },
-    { id: 2, name: "Augusto", length: 0.5, weight: 4.2, race: [{ id: 2, name: "Persa" }] },
-    { id: 3, name: "Ronaldo", length: 0.1, weight: 4.3, race: [{ id: 3, name: "Burmês" }] },
-    { id: 4, name: "Gato", length: 0.2, weight: 4.0, race: [{ id: 4, name: "Bengal" }] },
-    { id: 5, name: "Farofa", length: 0.8, weight: 4.0, race: [{ id: 5, name: "Abissínio" }] },
+    new Cat(1, "Whiskers", 40, 5, new Date(2018, 5, 15), "M", [this.races[0], this.races[1]]),
+    new Cat(2, "Fluffy", 35, 4, new Date(2020, 2, 10), "F", [this.races[1], this.races[3]]),
+    new Cat(3, "Mittens", 38, 6, new Date(2019, 8, 22), "F", [this.races[2]]),
+    new Cat(4, "Leo", 45, 7, new Date(2017, 11, 5), "M", [this.races[3]]),
+    new Cat(5, "Bella", 30, 3, new Date(2022, 6, 30), "F", [this.races[4]]),
   ];
 
   async getAll(search: string = ""): Promise<Cat[]> {

@@ -1,9 +1,13 @@
 import { Race } from "./Race";
 
 export class Cat {
-  id: number;
-  name: string;
-  length: number;
-  weight: number;
-  race: Race[];
+  constructor(
+    public id: number,
+    public name: string,
+    public length: number,
+    public weight: number,
+    public birth: Date,
+    public gender: "M" | "F",
+    public races: Race[]
+  ) {}
 }
