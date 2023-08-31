@@ -5,12 +5,14 @@ import cors from "cors";
 import { routes } from "./routes/Index.routes";
 import express, { NextFunction, Request, Response } from "express";
 import { AppError } from "./shared/models/Error";
+import { errors } from "celebrate";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(routes);
+app.use(errors());
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   let statusCode = 500;

@@ -1,6 +1,7 @@
 import { Cat } from "../shared/models/Cat";
 import { Race } from "../shared/models/Race";
 import { genId } from "../shared/utils/generateId";
+import { removeEspecialChars } from "../shared/utils/removeEspecialChars";
 
 export class CatRepository {
   races: Race[] = [
@@ -17,6 +18,7 @@ export class CatRepository {
     new Cat(3, "Mittens", 38, 6, new Date(2019, 8, 22), "F", [this.races[2]]),
     new Cat(4, "Leo", 45, 7, new Date(2017, 11, 5), "M", [this.races[3]]),
     new Cat(5, "Bella", 30, 3, new Date(2022, 6, 30), "F", [this.races[4]]),
+    new Cat(6, "Sansão", 30, 3, new Date(2022, 6, 30), "F", [this.races[4]]),
   ];
 
   async getAll(search: string = ""): Promise<Cat[]> {
@@ -25,7 +27,7 @@ export class CatRepository {
 
       if (search) {
         response = this.cats.filter((value) => {
-          return value.name.toLowerCase().includes(search.toLowerCase());
+          return removeEspecialChars(value.name).toLowerCase().includes(removeEspecialChars(search).toLowerCase());
         });
       }
 
