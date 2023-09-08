@@ -15,6 +15,8 @@ app.use(routes);
 app.use(errors());
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
+  console.log(error);
+
   let statusCode = 500;
   let message = "Não foi possível executar a operação. Tente novamente.";
 

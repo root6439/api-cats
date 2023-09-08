@@ -1,6 +1,6 @@
 import { Race } from "./Race";
 
-export class Cat {
+export class CatDTO {
   constructor(
     public id: number,
     public name: string,

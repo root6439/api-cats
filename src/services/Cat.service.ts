@@ -1,13 +1,13 @@
-import { CatRepository } from "../repositories/Cat.repository";
-import { Cat } from "../shared/models/Cat";
+import { log } from "console";
 import { AppError } from "../shared/models/Error";
-import { Race } from "../shared/models/Race";
+import { AppDataSource } from "../typeorm/DataSource";
+import { Cat } from "../typeorm/entities/Cat.entity";
 
 export class CatService {
-  private catRepo = new CatRepository();
+  private catRepo = AppDataSource.getRepository(Cat);
 
   async getAll(search?: string): Promise<Cat[]> {
-    let cats = await this.catRepo.getAll(search);
+    let cats = await this.catRepo.find({ where: { name: search } });
 
     if (!cats) {
       throw new AppError(404, "Objeto não encontrado!");
@@ -17,7 +17,7 @@ export class CatService {
   }
 
   async getById(id: number): Promise<Cat> {
-    let cat = await this.catRepo.getById(id);
+    let cat = await this.catRepo.findOne({ where: { id } });
 
     if (!cat) {
       throw new AppError(404, "Objeto não encontrado!");
@@ -27,24 +27,32 @@ export class CatService {
   }
 
   async post(body: Cat): Promise<Cat> {
-    let cat = await this.catRepo.post(body);
+    let cat = this.catRepo.create({
+      birth: new Date(body.birth),
+      gender: body.gender,
+      length: body.length,
+      name: body.name,
+      races: body.races,
+      weight: body.weight,
+    });
+
+    await this.catRepo.insert(cat);
+    
     return cat;
   }
 
-  async put(id: number, body: Cat): Promise<Cat> {
-    let catFound = await this.catRepo.getById(id);
+  async put(id: number, body: Cat): Promise<void> {
+    let catFound = await this.getById(id);
 
     if (!catFound) {
-      throw new AppError(400, "Objeto não encontrado!");
+      throw new AppError(404, "Objeto não encontrado!");
     }
 
-    let cat = await this.catRepo.put(id, body);
-
-    return cat;
+    await this.catRepo.update(id, body);
   }
 
   async delete(id: number): Promise<void> {
-    let catExists = await this.catRepo.getById(id);
+    let catExists = await this.getById(id);
 
     if (!catExists) {
       throw new AppError(404, "Objeto não encontrado!");
@@ -53,13 +61,13 @@ export class CatService {
     await this.catRepo.delete(id);
   }
 
-  async getRaces(): Promise<Race[]> {
-    let races = await this.catRepo.getRaces();
+  // async getRaces(): Promise<Race[]> {
+  //   let races = await this.catRepo.getRaces();
 
-    if (!races) {
-      throw new AppError(404, "Objeto não encontrado!");
-    }
+  //   if (!races) {
+  //     throw new AppError(404, "Objeto não encontrado!");
+  //   }
 
-    return races;
-  }
+  //   return races;
+  // }
 }

@@ -1,4 +1,4 @@
-import { Cat } from "../shared/models/Cat";
+import { Cat } from "../shared/models/Cat.model";
 import { Race } from "../shared/models/Race";
 import { genId } from "../shared/utils/generateId";
 import { removeEspecialChars } from "../shared/utils/removeEspecialChars";

@@ -5,7 +5,6 @@ import { celebrate, Segments, Joi } from "celebrate";
 
 const controller = new CatController();
 const catRouter = Router();
-
 catRouter.use(isAuthenticated);
 
 catRouter.get(
@@ -17,7 +16,9 @@ catRouter.get(
   }),
   controller.getAll.bind(controller)
 );
-catRouter.get("/races", controller.getRaces.bind(controller));
+
+// catRouter.get("/races", controller.getRaces.bind(controller));
+
 catRouter.get(
   "/:id",
   celebrate({
@@ -25,20 +26,13 @@ catRouter.get(
   }),
   controller.getById.bind(controller)
 );
+
 catRouter.post(
   "/",
-  celebrate({
-    [Segments.BODY]: Joi.object().keys({
-      name: Joi.string().required(),
-      length: Joi.number().required(),
-      weight: Joi.number().required(),
-      birth: Joi.date().required(),
-      gender: Joi.string().required(),
-      races: Joi.array().required(),
-    }),
-  }),
+  
   controller.post.bind(controller)
 );
+
 catRouter.put(
   "/:id",
   celebrate({
@@ -54,6 +48,7 @@ catRouter.put(
   }),
   controller.put.bind(controller)
 );
+
 catRouter.delete(
   "/:id",
   celebrate({
