@@ -1,13 +1,12 @@
-export class User {
-  id: number;
-  name: string;
-  email: string;
-  password: string;
+import { Address } from "../Address";
 
-  constructor(id: number, name: string, email: string, password: string) {
-    this.id = id;
-    this.name = name;
-    this.email = email;
-    this.password = password;
-  }
+export class User {
+  constructor(
+    public id: number,
+    public name: string,
+    public email: string,
+    public password: string,
+    public cpf: string,
+    public address: Address
+  ) {}
 }
