@@ -1,21 +1,20 @@
-import { User } from "../shared/models/user/User";
 import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import authConfig from "../config/auth";
 import { Auth } from "../shared/models/Auth";
 import { AppError } from "../shared/models/Error";
-import { UserRepository } from "../repositories/User.repository";
-import { UserDTO } from "../shared/models/user/UserDTO";
+import { AppDataSource } from "../typeorm/DataSource";
+import { User } from "../typeorm/entities/User.entity";
 
 export class LoginService {
-  private userRepo = new UserRepository();
+  private userRepo = AppDataSource.getRepository(User);
 
   async getAll(search: string = ""): Promise<User[]> {
-    return this.userRepo.getAll(search);
+    return this.userRepo.find({ where: { name: search } });
   }
 
-  async login(login: string, password: string): Promise<Auth> {
-    let user = await this.userRepo.getUserByEmail(login);
+  async login(email: string, password: string): Promise<Auth> {
+    let user = await this.userRepo.findOne({ where: { email } });
 
     if (!user) {
       throw new AppError(404, "Usuário não encontrado");
@@ -36,17 +35,15 @@ export class LoginService {
   }
 
   async register(user: User): Promise<User> {
-    let userAlreadyRegistered = await this.userRepo.getUserByEmail(user.email);
-
-    console.log(userAlreadyRegistered);
+    let userAlreadyRegistered = await this.userRepo.findOne({ where: { email: user.email } });
 
     if (userAlreadyRegistered) {
-      throw new AppError(500, "Usuário já cadastrado");
+      throw new AppError(400, "Usuário já cadastrado");
     }
 
-    let newUser = await this.userRepo.postUser(user);
+    let newUser = this.userRepo.create(user);
 
-    console.log(newUser);
+    await this.userRepo.insert(newUser);
 
     return newUser;
   }

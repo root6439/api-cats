@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
 import { CatService } from "../services/Cat.service";
-import { CatDTO } from "../shared/models/Cat.model";
 import { Cat } from "../typeorm/entities/Cat.entity";
 
 export class CatController {
   service = new CatService();
 
-  async getAll(req: Request, res: Response): Promise<Response<CatDTO[]>> {
+  async getAll(req: Request, res: Response): Promise<Response<Cat[]>> {
     let search: string = req.query.search as string;
     let response = await this.service.getAll(search);
     return res.json(response);

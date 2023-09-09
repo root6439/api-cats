@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { LoginController } from "../controllers/Login.controller";
+import { UserController } from "../controllers/User.controller";
 import { Joi, Segments, celebrate } from "celebrate";
 
-const controller = new LoginController();
+const controller = new UserController();
 const loginRouter = Router();
 
 loginRouter.post(

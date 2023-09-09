@@ -1,4 +1,3 @@
-import { log } from "console";
 import { AppError } from "../shared/models/Error";
 import { AppDataSource } from "../typeorm/DataSource";
 import { Cat } from "../typeorm/entities/Cat.entity";
@@ -37,7 +36,7 @@ export class CatService {
     });
 
     await this.catRepo.insert(cat);
-    
+
     return cat;
   }
 

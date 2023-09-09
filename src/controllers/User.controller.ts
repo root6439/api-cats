@@ -1,10 +1,10 @@
-import { NextFunction, Response } from "express";
+import { Response } from "express";
 import { Request } from "express";
 import { Auth } from "../shared/models/Auth";
 import { LoginService } from "../services/Login.service";
-import { User } from "../shared/models/user/User";
+import { User } from "../typeorm/entities/User.entity";
 
-export class LoginController {
+export class UserController {
   service = new LoginService();
 
   async getAll(req: Request, res: Response): Promise<Response<User[]>> {

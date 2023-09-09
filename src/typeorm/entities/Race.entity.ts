@@ -12,3 +12,4 @@ export class Race {
   @ManyToOne(() => Cat, (cat) => cat.races)
   cat: Cat;
 }
+  
