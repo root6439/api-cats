@@ -1,12 +1,25 @@
 import { Router } from "express";
-import { catRouter } from "./Cat.routes";
-import { loginRouter } from "./Login.routes";
+import { userRouter } from "./User.routes";
 import { raceRouter } from "./Race.routes";
+import { CatRouter } from "./Cat.routes";
 
-let routes = Router();
+export class AppRouter {
+  private router: Router;
+  private catRouter: CatRouter;
 
-routes.use("/cats", catRouter);
-routes.use("/users", loginRouter);
-routes.use("/races", raceRouter);
+  constructor() {
+    this.router = Router();
+    this.catRouter = new CatRouter();
+    this.setRouter();
+  }
 
-export { routes };
+  setRouter(): void {
+    this.router.use("/cats", this.catRouter.getRouter());
+    this.router.use("/users", userRouter);
+    this.router.use("/races", raceRouter);
+  }
+
+  getRouter(): Router {
+    return this.router;
+  }
+}

@@ -1,60 +1,62 @@
-import { Router } from "express";
 import { CatController } from "../controllers/Cat.controller";
 import { isAuthenticated } from "../middlewares/isAuthenticated";
 import { celebrate, Segments, Joi } from "celebrate";
+import { GenericRouter } from "../shared/interfaces/Router.interface";
 
-const controller = new CatController();
-const catRouter = Router();
-catRouter.use(isAuthenticated);
+export class CatRouter extends GenericRouter {
+  private controller: CatController;
 
-catRouter.get(
-  "/",
-  celebrate({
-    [Segments.QUERY]: {
-      search: Joi.string().allow(""),
-    },
-  }),
-  controller.getAll.bind(controller)
-);
+  constructor() {
+    super();
+    this.controller = new CatController();
+    this.setRouter();
+  }
 
-// catRouter.get("/races", controller.getRaces.bind(controller));
+  setRouter(): void {
+    this.router.use(isAuthenticated);
 
-catRouter.get(
-  "/:id",
-  celebrate({
-    [Segments.PARAMS]: { id: Joi.number().required() },
-  }),
-  controller.getById.bind(controller)
-);
+    this.router.get(
+      "/",
+      celebrate({
+        [Segments.QUERY]: {
+          search: Joi.string().allow(""),
+        },
+      }),
+      this.controller.getAll.bind(this.controller)
+    );
 
-catRouter.post(
-  "/",
-  
-  controller.post.bind(controller)
-);
+    this.router.get(
+      "/:id",
+      celebrate({
+        [Segments.PARAMS]: { id: Joi.number().required() },
+      }),
+      this.controller.getById.bind(this.controller)
+    );
 
-catRouter.put(
-  "/:id",
-  celebrate({
-    [Segments.BODY]: Joi.object().keys({
-      id: Joi.number().required(),
-      name: Joi.string().required(),
-      length: Joi.number().required(),
-      weight: Joi.number().required(),
-      birth: Joi.date().required(),
-      gender: Joi.string().required(),
-      races: Joi.array().required(),
-    }),
-  }),
-  controller.put.bind(controller)
-);
+    this.router.post("/", this.controller.post.bind(this.controller));
 
-catRouter.delete(
-  "/:id",
-  celebrate({
-    [Segments.PARAMS]: { id: Joi.number().required() },
-  }),
-  controller.delete.bind(controller)
-);
+    this.router.put(
+      "/:id",
+      celebrate({
+        [Segments.BODY]: Joi.object().keys({
+          id: Joi.number().required(),
+          name: Joi.string().required(),
+          length: Joi.number().required(),
+          weight: Joi.number().required(),
+          birth: Joi.date().required(),
+          gender: Joi.string().required(),
+          races: Joi.array().required(),
+        }),
+      }),
+      this.controller.put.bind(this.controller)
+    );
 
-export { catRouter };
+    this.router.delete(
+      "/:id",
+      celebrate({
+        [Segments.PARAMS]: { id: Joi.number().required() },
+      }),
+      this.controller.delete.bind(this.controller)
+    );
+  }
+}

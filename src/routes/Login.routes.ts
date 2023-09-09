@@ -1,48 +1,30 @@
+import { celebrate, Segments, Joi } from "celebrate";
 import { Router } from "express";
-import { UserController } from "../controllers/User.controller";
-import { Joi, Segments, celebrate } from "celebrate";
+import { LoginController } from "../controllers/Login.controller";
 
-const controller = new UserController();
-const loginRouter = Router();
+export class LoginRoutes {
+  private loginRouter: Router;
+  private controller: LoginController;
 
-loginRouter.post(
-  "/login",
-  celebrate({
-    [Segments.BODY]: {
-      login: Joi.string().required(),
-      password: Joi.string().required(),
-    },
-  }),
-  controller.login.bind(controller)
-);
-loginRouter.post(
-  "/",
-  celebrate({
-    [Segments.BODY]: {
-      name: Joi.string().required(),
-      email: Joi.string().email().required(),
-      password: Joi.string().required(),
-      cpf: Joi.string().required(),
-      address: {
-        cep: Joi.number().required(),
-        street: Joi.string().required(),
-        city: Joi.string().required(),
-        neighborhood: Joi.string().required(),
-        state: Joi.string().required(),
-        number: Joi.number().required(),
-      },
-    },
-  }),
-  controller.register.bind(controller)
-);
-loginRouter.get(
-  "/",
-  celebrate({
-    [Segments.QUERY]: {
-      search: Joi.string().allow(""),
-    },
-  }),
-  controller.getAll.bind(controller)
-);
+  constructor() {
+    this.loginRouter = Router();
+    this.controller = new LoginController();
+  }
 
-export { loginRouter };
+  setRouter(): void {
+    this.loginRouter.post(
+      "/login",
+      celebrate({
+        [Segments.BODY]: {
+          login: Joi.string().required(),
+          password: Joi.string().required(),
+        },
+      }),
+      this.controller.login
+    );
+  }
+
+  getRouter(): Router {
+    return this.loginRouter;
+  }
+}
