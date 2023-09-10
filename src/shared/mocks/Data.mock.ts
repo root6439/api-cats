@@ -1,16 +1,12 @@
 import { User } from "../../typeorm/entities/User.entity";
-import { Environment } from "../Enums/Environment.enum";
 import { AppDataSource } from "../../typeorm/DataSource";
 
 export class DataMock {
-  private userRepo = AppDataSource.getRepository(User);
+  static async createMockUsers(): Promise<void> {
+    let userRepo = AppDataSource.getRepository(User);
+    await AppDataSource.createQueryBuilder().delete().from(User).execute();
 
-  async createMockUsers(): Promise<void> {
-    if (process.env.environment != Environment.DEV) {
-      return;
-    }
-
-    let newUsers = this.userRepo.create([
+    let newUsers = userRepo.create([
       {
         name: "João da Silva",
         email: "joao@example.com",
@@ -83,6 +79,6 @@ export class DataMock {
       },
     ]);
 
-    await this.userRepo.save(newUsers);
+    await userRepo.save(newUsers);
   }
 }

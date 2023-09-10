@@ -4,6 +4,7 @@ import { Cat } from "./entities/Cat.entity";
 import { User } from "./entities/User.entity";
 import { Address } from "./entities/Address.entity";
 import { DataMock } from "../shared/mocks/Data.mock";
+import { Environment } from "../shared/Enums/Environment.enum";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -20,8 +21,10 @@ export const AppDataSource = new DataSource({
 });
 
 AppDataSource.initialize()
-  .then(() => {
-    new DataMock().createMockUsers();
+  .then(async () => {
+    if (process.env.environment == Environment.DEV) {
+      await DataMock.createMockUsers();
+    }
     // console.log("Data Source has been initialized!");
   })
   .catch((err) => {

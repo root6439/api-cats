@@ -1,3 +1,4 @@
+import { Like } from "typeorm";
 import { AppError } from "../shared/models/Error";
 import { AppDataSource } from "../typeorm/DataSource";
 import { Address } from "../typeorm/entities/Address.entity";
@@ -8,7 +9,7 @@ export class UserService {
   private addressRepo = AppDataSource.getRepository(Address);
 
   async getAll(search: string = ""): Promise<User[]> {
-    return this.userRepo.find({ where: { name: search } });
+    return this.userRepo.find({ where: { name: Like(`%${search}%`) } });
   }
 
   async findById(id: number): Promise<User> {

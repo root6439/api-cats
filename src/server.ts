@@ -6,7 +6,6 @@ import express, { Express, NextFunction, Request, Response } from "express";
 import { AppError } from "./shared/models/Error";
 import { errors } from "celebrate";
 import { AppRouter } from "./routes/Index.routes";
-import { DataMock } from "./shared/mocks/Data.mock";
 
 class App {
   express: Express;
