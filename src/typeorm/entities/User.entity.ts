@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Address } from "./Address.entity";
 
 @Entity("users")
@@ -18,7 +18,9 @@ export class User {
   @Column()
   cpf: string;
 
-  @OneToOne(() => Address)
+  @ManyToOne(() => Address, (address) => address.user, {
+    cascade: true,
+  })
   @JoinColumn()
   address: Address;
 }

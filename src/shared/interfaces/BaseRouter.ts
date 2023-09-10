@@ -1,13 +1,11 @@
 import { Router } from "express";
 
-export abstract class GenericRouter {
+export abstract class BaseRouter {
   router: Router;
 
   constructor() {
     this.router = Router();
   }
-
-  setRouter(): void {}
 
   getRouter(): Router {
     return this.router;

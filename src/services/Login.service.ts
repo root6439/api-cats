@@ -3,7 +3,6 @@ import { sign } from "jsonwebtoken";
 import { Auth } from "../shared/models/Auth";
 import { AppError } from "../shared/models/Error";
 import authConfig from "../config/auth";
-import { UserService } from "./User.service";
 import { AppDataSource } from "../typeorm/DataSource";
 import { User } from "../typeorm/entities/User.entity";
 

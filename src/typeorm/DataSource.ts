@@ -1,6 +1,9 @@
 import { DataSource } from "typeorm";
 import { Race } from "./entities/Race.entity";
 import { Cat } from "./entities/Cat.entity";
+import { User } from "./entities/User.entity";
+import { Address } from "./entities/Address.entity";
+import { DataMock } from "../shared/mocks/Data.mock";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -11,15 +14,16 @@ export const AppDataSource = new DataSource({
   database: "agropecuaria",
   synchronize: true,
   logging: true,
-  entities: [Race, Cat],
+  entities: [Race, Cat, User, Address],
   subscribers: [],
   migrations: [],
 });
 
 AppDataSource.initialize()
   .then(() => {
-    console.log("Data Source has been initialized!");
+    new DataMock().createMockUsers();
+    // console.log("Data Source has been initialized!");
   })
   .catch((err) => {
-    console.error(err);
+    // console.error(err);
   });

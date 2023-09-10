@@ -1,9 +1,9 @@
 import { CatController } from "../controllers/Cat.controller";
 import { isAuthenticated } from "../middlewares/isAuthenticated";
 import { celebrate, Segments, Joi } from "celebrate";
-import { GenericRouter } from "../shared/interfaces/Router.interface";
+import { BaseRouter } from "../shared/interfaces/BaseRouter";
 
-export class CatRouter extends GenericRouter {
+export class CatRouter extends BaseRouter {
   private controller: CatController;
 
   constructor() {
