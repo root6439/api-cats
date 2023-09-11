@@ -3,6 +3,7 @@ import { AppError } from "../shared/models/Error";
 import { AppDataSource } from "../typeorm/DataSource";
 import { Address } from "../typeorm/entities/Address.entity";
 import { User } from "../typeorm/entities/User.entity";
+import { hash } from "bcryptjs";
 
 export class UserService {
   private userRepo = AppDataSource.getRepository(User);
@@ -34,6 +35,8 @@ export class UserService {
     }
 
     let newUser = this.userRepo.create(user);
+    newUser.password = await hash(user.password, 8);
+
     await this.userRepo.insert(newUser);
 
     return newUser;

@@ -24,6 +24,7 @@ AppDataSource.initialize()
   .then(async () => {
     if (process.env.environment == Environment.DEV) {
       await DataMock.createMockUsers();
+      await DataMock.createMockCats();
     }
     // console.log("Data Source has been initialized!");
   })

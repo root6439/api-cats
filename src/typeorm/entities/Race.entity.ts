@@ -9,7 +9,6 @@ export class Race {
   @Column()
   name: string;
 
-  @ManyToOne(() => Cat, (cat) => cat.races)
+  @ManyToOne(() => Cat, (cat) => cat.races, )
   cat: Cat;
 }
-  

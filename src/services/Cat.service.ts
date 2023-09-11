@@ -1,3 +1,4 @@
+import { Like } from 'typeorm';
 import { AppError } from "../shared/models/Error";
 import { AppDataSource } from "../typeorm/DataSource";
 import { Cat } from "../typeorm/entities/Cat.entity";
@@ -6,7 +7,7 @@ export class CatService {
   private catRepo = AppDataSource.getRepository(Cat);
 
   async getAll(search?: string): Promise<Cat[]> {
-    let cats = await this.catRepo.find({ where: { name: search } });
+    let cats = await this.catRepo.find({ where: { name: Like(`%${search}%`) } });
 
     if (!cats) {
       throw new AppError(404, "Objeto não encontrado!");
