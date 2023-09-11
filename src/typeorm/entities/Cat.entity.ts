@@ -9,10 +9,10 @@ export class Cat {
   @Column()
   name: string;
 
-  @Column()
+  @Column("float", { precision: 2 })
   length: number;
 
-  @Column()
+  @Column("float", { precision: 2 })
   weight: number;
 
   @Column()

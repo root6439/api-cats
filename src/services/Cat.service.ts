@@ -18,7 +18,7 @@ export class CatService {
   }
 
   async getById(id: string): Promise<Cat> {
-    let cat = await this.catRepo.findOne({ where: { id }, relations: ['races'] });
+    let cat = await this.catRepo.findOne({ where: { id }, relations: ["races"] });
 
     if (!cat) {
       throw new AppError(404, "Objeto não encontrado!");
