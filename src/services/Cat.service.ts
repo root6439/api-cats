@@ -1,12 +1,13 @@
-import { Like } from 'typeorm';
+import { Like } from "typeorm";
 import { AppError } from "../shared/models/Error";
 import { AppDataSource } from "../typeorm/DataSource";
 import { Cat } from "../typeorm/entities/Cat.entity";
+import { Race } from "../typeorm/entities/Race.entity";
 
 export class CatService {
   private catRepo = AppDataSource.getRepository(Cat);
 
-  async getAll(search?: string): Promise<Cat[]> {
+  async getAll(search: string = ""): Promise<Cat[]> {
     let cats = await this.catRepo.find({ where: { name: Like(`%${search}%`) } });
 
     if (!cats) {
@@ -16,8 +17,8 @@ export class CatService {
     return cats;
   }
 
-  async getById(id: number): Promise<Cat> {
-    let cat = await this.catRepo.findOne({ where: { id } });
+  async getById(id: string): Promise<Cat> {
+    let cat = await this.catRepo.findOne({ where: { id }, relations: ['races'] });
 
     if (!cat) {
       throw new AppError(404, "Objeto não encontrado!");
@@ -41,7 +42,7 @@ export class CatService {
     return cat;
   }
 
-  async put(id: number, body: Cat): Promise<void> {
+  async put(id: string, body: Cat): Promise<void> {
     let catFound = await this.getById(id);
 
     if (!catFound) {
@@ -51,7 +52,7 @@ export class CatService {
     await this.catRepo.update(id, body);
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(id: string): Promise<void> {
     let catExists = await this.getById(id);
 
     if (!catExists) {

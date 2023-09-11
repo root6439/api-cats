@@ -28,7 +28,7 @@ export class CatRouter extends BaseRouter {
     this.router.get(
       "/:id",
       celebrate({
-        [Segments.PARAMS]: { id: Joi.number().required() },
+        [Segments.PARAMS]: { id: Joi.string().required() },
       }),
       this.controller.getById.bind(this.controller)
     );

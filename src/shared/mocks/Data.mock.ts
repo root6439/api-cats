@@ -12,9 +12,6 @@ export class DataMock {
   }
 
   static async createMockUsers(): Promise<void> {
-    await AppDataSource.createQueryBuilder().delete().from(User).execute();
-    await AppDataSource.createQueryBuilder().delete().from(Address).execute();
-
     let userRepo = AppDataSource.getRepository(User);
 
     let password = await hash("123", 8);
@@ -96,10 +93,28 @@ export class DataMock {
   }
 
   static async createMockCats(): Promise<void> {
-    await AppDataSource.createQueryBuilder().delete().from(Race).execute();
-    await AppDataSource.createQueryBuilder().delete().from(Cat).execute();
-
     let catRepo = AppDataSource.getRepository(Cat);
+    let raceRepo = AppDataSource.getRepository(Race);
+
+    let races = raceRepo.create([
+      {
+        name: "Siamese",
+      },
+      {
+        name: "Persian",
+      },
+      {
+        name: "Maine Coon",
+      },
+      {
+        name: "Scottish Fold",
+      },
+      {
+        name: "Bengal",
+      },
+    ]);
+
+    let newRaces = await raceRepo.save(races);
 
     let newCats = catRepo.create([
       {
@@ -108,11 +123,7 @@ export class DataMock {
         weight: 4.2,
         birth: "2023-09-11T12:00:00.000Z",
         gender: "M",
-        races: [
-          {
-            name: "Siamese",
-          },
-        ],
+        races: [newRaces[0], newRaces[1]],
       },
       {
         name: "Mittens",
@@ -120,11 +131,7 @@ export class DataMock {
         weight: 3.8,
         birth: "2023-09-11T12:00:00.000Z",
         gender: "F",
-        races: [
-          {
-            name: "Persian",
-          },
-        ],
+        races: [newRaces[3]],
       },
       {
         name: "Fluffy",
@@ -132,11 +139,7 @@ export class DataMock {
         weight: 5.5,
         birth: "2023-09-11T12:00:00.000Z",
         gender: "M",
-        races: [
-          {
-            name: "Maine Coon",
-          },
-        ],
+        races: [newRaces[4]],
       },
       {
         name: "Socks",
@@ -144,11 +147,7 @@ export class DataMock {
         weight: 4.9,
         birth: "2023-09-11T12:00:00.000Z",
         gender: "F",
-        races: [
-          {
-            name: "Scottish Fold",
-          },
-        ],
+        races: [newRaces[1]],
       },
       {
         name: "Tiger",
@@ -156,11 +155,7 @@ export class DataMock {
         weight: 6.2,
         birth: "2023-09-11T12:00:00.000Z",
         gender: "M",
-        races: [
-          {
-            name: "Bengal",
-          },
-        ],
+        races: [newRaces[0]],
       },
     ]);
 

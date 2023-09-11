@@ -12,7 +12,7 @@ export class CatController {
   }
 
   async getById(req: Request, res: Response): Promise<Response<Cat>> {
-    let id = Number(req.params.id);
+    let id = String(req.params.id);
     let response = await this.service.getById(id);
     return res.json(response);
   }
@@ -24,13 +24,13 @@ export class CatController {
   }
 
   async put(req: Request, res: Response): Promise<Response<Cat>> {
-    let id = Number(req.params.id);
+    let id = String(req.params.id);
     await this.service.put(id, req.body);
     return res.status(200);
   }
 
   async delete(req: Request, res: Response): Promise<Response<boolean>> {
-    let id = Number(req.params.id);
+    let id = String(req.params.id);
     await this.service.delete(id);
     return res.status(200);
   }

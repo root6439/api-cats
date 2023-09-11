@@ -4,7 +4,7 @@ import { Race } from "./Race.entity";
 @Entity("cats")
 export class Cat {
   @PrimaryGeneratedColumn("uuid")
-  id: number;
+  id: string;
 
   @Column()
   name: string;

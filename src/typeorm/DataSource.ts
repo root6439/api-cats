@@ -18,6 +18,7 @@ export const AppDataSource = new DataSource({
   entities: [Race, Cat, User, Address],
   subscribers: [],
   migrations: [],
+  dropSchema: true,
 });
 
 AppDataSource.initialize()
