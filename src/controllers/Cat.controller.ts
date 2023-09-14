@@ -1,13 +1,16 @@
 import { Request, Response } from "express";
 import { CatService } from "../services/Cat.service";
 import { Cat } from "../typeorm/entities/Cat.entity";
+import { PaginationProperties } from "../shared/interfaces/Pagination";
 
 export class CatController {
   service = new CatService();
 
   async getAll(req: Request, res: Response): Promise<Response<Cat[]>> {
     let search: string = req.query.search as string;
-    let response = await this.service.getAll(search);
+    let pagParams = new PaginationProperties({ ...req.query });
+
+    let response = await this.service.getAll(search, pagParams);
     return res.json(response);
   }
 
@@ -18,7 +21,6 @@ export class CatController {
   }
 
   async post(req: Request, res: Response): Promise<Response<Cat>> {
-    console.log(req.body);
     let cat: Cat = await this.service.post(req.body);
     return res.status(201).json(cat);
   }

@@ -98,19 +98,34 @@ export class DataMock {
 
     let races = raceRepo.create([
       {
-        name: "Siamese",
+        name: "Bengal",
       },
       {
-        name: "Persian",
+        name: "Siamese",
       },
       {
         name: "Maine Coon",
       },
       {
+        name: "Persian",
+      },
+      {
         name: "Scottish Fold",
       },
       {
-        name: "Bengal",
+        name: "Siberian",
+      },
+      {
+        name: "British Shorthair",
+      },
+      {
+        name: "American Shorthair",
+      },
+      {
+        name: "Ragamuffin",
+      },
+      {
+        name: "Maine Coon",
       },
     ]);
 
@@ -118,44 +133,76 @@ export class DataMock {
 
     let newCats = catRepo.create([
       {
-        name: "Whiskers",
-        length: 35.5,
-        weight: 4.2,
-        birth: "2023-09-11T12:00:00.000Z",
-        gender: "M",
-        races: [newRaces[0], newRaces[1]],
-      },
-      {
-        name: "Mittens",
-        length: 42.3,
-        weight: 3.8,
-        birth: "2023-09-11T12:00:00.000Z",
-        gender: "F",
-        races: [newRaces[3]],
-      },
-      {
         name: "Fluffy",
         length: 55.1,
         weight: 5.5,
         birth: "2023-09-11T12:00:00.000Z",
         gender: "M",
-        races: [newRaces[4]],
+        races: [newRaces[0]],
       },
       {
-        name: "Socks",
-        length: 48.7,
-        weight: 4.9,
-        birth: "2023-09-11T12:00:00.000Z",
+        name: "Whiskers",
+        length: 42.5,
+        weight: 4.2,
+        birth: "2022-11-05T08:30:00.000Z",
         gender: "F",
         races: [newRaces[1]],
       },
       {
-        name: "Tiger",
+        name: "Max",
+        length: 48.7,
+        weight: 6.0,
+        birth: "2020-05-20T14:15:00.000Z",
+        gender: "M",
+        races: [newRaces[2]],
+      },
+      {
+        name: "Luna",
         length: 37.2,
-        weight: 6.2,
-        birth: "2023-09-11T12:00:00.000Z",
+        weight: 3.8,
+        birth: "2019-08-14T17:45:00.000Z",
+        gender: "F",
+        races: [newRaces[3]],
+      },
+      {
+        name: "Simba",
+        length: 60.3,
+        weight: 7.2,
+        birth: "2021-03-30T10:20:00.000Z",
         gender: "M",
         races: [newRaces[0]],
+      },
+      {
+        name: "Bella",
+        length: 38.6,
+        weight: 4.0,
+        birth: "2020-12-03T11:55:00.000Z",
+        gender: "F",
+        races: [newRaces[1]],
+      },
+      {
+        name: "Leo",
+        length: 47.8,
+        weight: 6.2,
+        birth: "2021-04-18T14:40:00.000Z",
+        gender: "M",
+        races: [newRaces[2]],
+      },
+      {
+        name: "Sophie",
+        length: 36.4,
+        weight: 3.6,
+        birth: "2019-11-29T16:50:00.000Z",
+        gender: "F",
+        races: [newRaces[3]],
+      },
+      {
+        name: "Tiger",
+        length: 44.5,
+        weight: 5.4,
+        birth: "2022-02-15T09:30:00.000Z",
+        gender: "M",
+        races: [newRaces[4]],
       },
     ]);
 

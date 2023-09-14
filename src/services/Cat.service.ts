@@ -1,20 +1,26 @@
+import { Pagination } from "./../shared/interfaces/Pagination";
 import { Like } from "typeorm";
 import { AppError } from "../shared/models/Error";
 import { AppDataSource } from "../typeorm/DataSource";
 import { Cat } from "../typeorm/entities/Cat.entity";
-import { Race } from "../typeorm/entities/Race.entity";
+import { PaginationProperties } from "../shared/interfaces/Pagination";
 
 export class CatService {
   private catRepo = AppDataSource.getRepository(Cat);
 
-  async getAll(search: string = ""): Promise<Cat[]> {
-    let cats = await this.catRepo.find({ where: { name: Like(`%${search}%`) } });
+  async getAll(search: string = "", pProps: PaginationProperties): Promise<Pagination<Cat>> {
+    let { page, offset, orderBy, direction } = pProps;
 
-    if (!cats) {
-      throw new AppError(404, "Objeto não encontrado!");
-    }
+    let [data, total] = await this.catRepo.findAndCount({
+      where: { name: Like(`%${search}%`) },
+      take: offset,
+      skip: (page - 1) * offset,
+      order: {
+        [orderBy]: direction,
+      },
+    });
 
-    return cats;
+    return pProps.getData(data, total);
   }
 
   async getById(id: string): Promise<Cat> {

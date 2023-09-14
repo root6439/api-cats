@@ -2,6 +2,7 @@ import { CatController } from "../controllers/Cat.controller";
 import { isAuthenticated } from "../middlewares/isAuthenticated";
 import { celebrate, Segments, Joi } from "celebrate";
 import { BaseRouter } from "../shared/interfaces/BaseRouter";
+import { pagination } from "../middlewares/paginationDefaultValues";
 
 export class CatRouter extends BaseRouter {
   private controller: CatController;
@@ -15,23 +16,9 @@ export class CatRouter extends BaseRouter {
   setRouter(): void {
     this.router.use(isAuthenticated);
 
-    this.router.get(
-      "/",
-      celebrate({
-        [Segments.QUERY]: {
-          search: Joi.string().allow(""),
-        },
-      }),
-      this.controller.getAll.bind(this.controller)
-    );
+    this.router.get("/", pagination, this.controller.getAll.bind(this.controller));
 
-    this.router.get(
-      "/:id",
-      celebrate({
-        [Segments.PARAMS]: { id: Joi.string().required() },
-      }),
-      this.controller.getById.bind(this.controller)
-    );
+    this.router.get("/:id", this.controller.getById.bind(this.controller));
 
     this.router.post("/", this.controller.post.bind(this.controller));
 
