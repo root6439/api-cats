@@ -1,12 +1,18 @@
-import { Router } from "express";
 import { isAuthenticated } from "../middlewares/isAuthenticated";
 import { RaceController } from "../controllers/Race.controller";
+import { BaseRouter, RouterConfig } from "../shared/interfaces/BaseRouter";
 
-const controller = new RaceController();
-const raceRouter = Router();
-raceRouter.use(isAuthenticated);
+export class RaceRouter extends BaseRouter implements RouterConfig {
+  private controller: RaceController;
 
-raceRouter.get("/", controller.getAll.bind(controller));
-raceRouter.post("/", controller.post.bind(controller));
+  constructor() {
+    super();
+    this.controller = new RaceController();
+  }
 
-export { raceRouter };
+  setRouter(): void {
+    this.router.use(isAuthenticated);
+    this.router.get("/", this.controller.getAll.bind(this.controller));
+    this.router.post("/", this.controller.post.bind(this.controller));
+  }
+}
