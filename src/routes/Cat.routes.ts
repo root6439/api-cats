@@ -18,15 +18,20 @@ export class CatRouter extends BaseRouter {
 
     this.router.get("/", pagination, this.controller.getAll.bind(this.controller));
 
-    this.router.get("/:id", this.controller.getById.bind(this.controller));
-
-    this.router.post("/", this.controller.post.bind(this.controller));
-
-    this.router.put(
+    this.router.get(
       "/:id",
       celebrate({
+        [Segments.PARAMS]: {
+          id: Joi.string().required(),
+        },
+      }),
+      this.controller.getById.bind(this.controller)
+    );
+
+    this.router.post(
+      "/",
+      celebrate({
         [Segments.BODY]: Joi.object().keys({
-          id: Joi.number().required(),
           name: Joi.string().required(),
           length: Joi.number().required(),
           weight: Joi.number().required(),
@@ -35,13 +40,25 @@ export class CatRouter extends BaseRouter {
           races: Joi.array().required(),
         }),
       }),
+      this.controller.post.bind(this.controller)
+    );
+
+    this.router.put(
+      "/:id",
+      celebrate({
+        [Segments.BODY]: Joi.object().keys({
+          name: Joi.string().required(),
+          length: Joi.number().required(),
+          weight: Joi.number().required(),
+        }),
+      }),
       this.controller.put.bind(this.controller)
     );
 
     this.router.delete(
       "/:id",
       celebrate({
-        [Segments.PARAMS]: { id: Joi.number().required() },
+        [Segments.PARAMS]: { id: Joi.string().required() },
       }),
       this.controller.delete.bind(this.controller)
     );

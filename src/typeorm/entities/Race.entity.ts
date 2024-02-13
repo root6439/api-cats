@@ -6,9 +6,9 @@ export class Race {
   @PrimaryGeneratedColumn("uuid")
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   name: string;
 
-  @ManyToOne(() => Cat, (cat) => cat.races, )
+  @ManyToOne(() => Cat, (cat) => cat.races, { onDelete: "CASCADE" })
   cat: Cat;
 }

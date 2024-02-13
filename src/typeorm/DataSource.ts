@@ -5,17 +5,18 @@ import { User } from "./entities/User.entity";
 import { Address } from "./entities/Address.entity";
 import { DataMock } from "../shared/mocks/Data.mock";
 import { Environment } from "../shared/Enums/Environment.enum";
+import { Role } from "./entities/Roles.entity";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
-  host: "127.0.0.1",
+  host: process.env.host,
   port: 3306,
   username: "root",
   password: "1234",
   database: "agropecuaria",
   synchronize: true,
   logging: true,
-  entities: [Race, Cat, User, Address],
+  entities: [Race, Cat, User, Address, Role],
   subscribers: [],
   migrations: [],
   dropSchema: true,
@@ -24,8 +25,7 @@ export const AppDataSource = new DataSource({
 AppDataSource.initialize()
   .then(async () => {
     if (process.env.environment == Environment.DEV) {
-      await DataMock.createMockUsers();
-      await DataMock.createMockCats();
+      await DataMock.createDataMocks();
     }
     // console.log("Data Source has been initialized!");
   })

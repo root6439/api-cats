@@ -21,8 +21,6 @@ export class Cat {
   @Column()
   gender: "M" | "F";
 
-  @OneToMany(() => Race, (race) => race.cat, {
-    cascade: true,
-  })
+  @OneToMany(() => Race, (race) => race.cat, { cascade: true })
   races: Race[];
 }

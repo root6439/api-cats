@@ -8,6 +8,7 @@ export class RaceRouter extends BaseRouter implements RouterConfig {
   constructor() {
     super();
     this.controller = new RaceController();
+    this.setRouter();
   }
 
   setRouter(): void {

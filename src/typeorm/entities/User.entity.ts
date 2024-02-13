@@ -1,5 +1,6 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Address } from "./Address.entity";
+import { Role } from "./Roles.entity";
 
 @Entity("users")
 export class User {
@@ -23,4 +24,8 @@ export class User {
   })
   @JoinColumn()
   address: Address;
+
+  @ManyToMany(() => Role)
+  @JoinTable()
+  roles: Role[];
 }

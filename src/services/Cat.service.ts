@@ -1,5 +1,5 @@
 import { Pagination } from "./../shared/interfaces/Pagination";
-import { Like } from "typeorm";
+import { DeleteResult, Like, UpdateResult } from "typeorm";
 import { AppError } from "../shared/models/Error";
 import { AppDataSource } from "../typeorm/DataSource";
 import { Cat } from "../typeorm/entities/Cat.entity";
@@ -13,6 +13,7 @@ export class CatService {
 
     let [data, total] = await this.catRepo.findAndCount({
       where: { name: Like(`%${search}%`) },
+      relations: ["races"],
       take: offset,
       skip: (page - 1) * offset,
       order: {
@@ -48,17 +49,22 @@ export class CatService {
     return cat;
   }
 
-  async put(id: string, body: Cat): Promise<void> {
+  async put(id: string, body: Cat): Promise<Cat> {
     let catFound = await this.getById(id);
 
     if (!catFound) {
       throw new AppError(404, "Objeto não encontrado!");
     }
 
-    await this.catRepo.update(id, body);
+    let updatedCat = await this.catRepo.save({
+      id,
+      ...body,
+    });
+
+    return updatedCat;
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string): Promise<boolean> {
     let catExists = await this.getById(id);
 
     if (!catExists) {
@@ -66,6 +72,8 @@ export class CatService {
     }
 
     await this.catRepo.delete(id);
+
+    return true;
   }
 
   // async getRaces(): Promise<Race[]> {

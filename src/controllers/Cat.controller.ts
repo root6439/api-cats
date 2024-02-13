@@ -17,7 +17,7 @@ export class CatController {
   async getById(req: Request, res: Response): Promise<Response<Cat>> {
     let id = String(req.params.id);
     let response = await this.service.getById(id);
-    return res.json(response);
+    return res.status(200).json(response);
   }
 
   async post(req: Request, res: Response): Promise<Response<Cat>> {
@@ -27,18 +27,13 @@ export class CatController {
 
   async put(req: Request, res: Response): Promise<Response<Cat>> {
     let id = String(req.params.id);
-    await this.service.put(id, req.body);
-    return res.status(200);
+    let result = await this.service.put(id, req.body);
+    return res.status(200).json(result);
   }
 
-  async delete(req: Request, res: Response): Promise<Response<boolean>> {
+  async delete(req: Request, res: Response): Promise<Response<void>> {
     let id = String(req.params.id);
-    await this.service.delete(id);
-    return res.status(200);
+    let result = await this.service.delete(id);
+    return res.status(200).json(result);
   }
-
-  // async getRaces(req: Request, res: Response): Promise<Response<Race[]>> {
-  //   let races = await this.service.getRaces();
-  //   return res.status(200).json(races);
-  // }
 }

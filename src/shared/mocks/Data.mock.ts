@@ -1,14 +1,15 @@
 import { User } from "../../typeorm/entities/User.entity";
 import { AppDataSource } from "../../typeorm/DataSource";
-import { Address } from "../../typeorm/entities/Address.entity";
 import { hash } from "bcryptjs";
 import { Cat } from "../../typeorm/entities/Cat.entity";
 import { Race } from "../../typeorm/entities/Race.entity";
+import { Role } from "../../typeorm/entities/Roles.entity";
 
 export class DataMock {
   static async createDataMocks(): Promise<void> {
     await this.createMockCats();
     await this.createMockUsers();
+    await this.createMockRoles();
   }
 
   static async createMockUsers(): Promise<void> {
@@ -92,6 +93,14 @@ export class DataMock {
     await userRepo.save(newUsers);
   }
 
+  static async createMockRoles(): Promise<void> {
+    let roleRepo = AppDataSource.getRepository(Role);
+
+    let roles = roleRepo.create([{ name: "admin" }, { name: "public" }]);
+
+    await roleRepo.save(roles);
+  }
+
   static async createMockCats(): Promise<void> {
     let catRepo = AppDataSource.getRepository(Cat);
     let raceRepo = AppDataSource.getRepository(Race);
@@ -125,7 +134,7 @@ export class DataMock {
         name: "Ragamuffin",
       },
       {
-        name: "Maine Coon",
+        name: "Vira-lata",
       },
     ]);
 
@@ -170,7 +179,7 @@ export class DataMock {
         weight: 7.2,
         birth: "2021-03-30T10:20:00.000Z",
         gender: "M",
-        races: [newRaces[0]],
+        races: [newRaces[4]],
       },
       {
         name: "Bella",
@@ -178,7 +187,7 @@ export class DataMock {
         weight: 4.0,
         birth: "2020-12-03T11:55:00.000Z",
         gender: "F",
-        races: [newRaces[1]],
+        races: [newRaces[5]],
       },
       {
         name: "Leo",
@@ -186,7 +195,7 @@ export class DataMock {
         weight: 6.2,
         birth: "2021-04-18T14:40:00.000Z",
         gender: "M",
-        races: [newRaces[2]],
+        races: [newRaces[6]],
       },
       {
         name: "Sophie",
@@ -194,7 +203,7 @@ export class DataMock {
         weight: 3.6,
         birth: "2019-11-29T16:50:00.000Z",
         gender: "F",
-        races: [newRaces[3]],
+        races: [newRaces[7]],
       },
       {
         name: "Tiger",
@@ -202,7 +211,15 @@ export class DataMock {
         weight: 5.4,
         birth: "2022-02-15T09:30:00.000Z",
         gender: "M",
-        races: [newRaces[4]],
+        races: [newRaces[8]],
+      },
+      {
+        name: "Adolgo",
+        length: 32.5,
+        weight: 6.8,
+        birth: "2022-02-15T09:30:00.000Z",
+        gender: "M",
+        races: [newRaces[9]],
       },
     ]);
 
